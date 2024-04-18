@@ -4,7 +4,7 @@ const mineflayer = require('mineflayer');
 const bot = mineflayer.createBot({
     host: 'bksmp.hbmc.net',
     port: 31098,
-    username: 'your_username', // Replace with your Minecraft username
+    username: 'Belldong', // Replace with your Minecraft username
     auth: 'offline' // Set to 'offline' for offline mode
 });
 
