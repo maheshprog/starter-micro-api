@@ -8,18 +8,19 @@ var bot = mineflayer.createBot({
 });
 
 bot.on('spawn', () => {
-    bot.chat('/log Belldong123') // Replace '/your_command_here' with the command you want to run
+    bot.chat('/log Belldong123');
+    moveInCircle(); // Move the function call here
 });
 
 function moveInCircle() {
     var phi = 0;
-    bot.on('physicTick', () => {
+    setInterval(() => {
         phi += Math.PI / 20;
         bot.setControlState('forward', true);
         bot.setControlState('jump', true);
         bot.setControlState('sneak', false);
         bot.look(Math.cos(phi) * 0.5, Math.sin(phi) * 0.5, false);
-    });
+    }, 50); // Use setInterval to continuously move
 }
 
 http.createServer(function (req, res) {
@@ -27,7 +28,6 @@ http.createServer(function (req, res) {
     
     // Check if the bot is spawned
     if (bot && bot.entity) {
-        moveInCircle();
         res.write(`Bot is now moving in a circle at ${bot.entity.position}!`);
     } else {
         res.write('Bot is not in game.');
