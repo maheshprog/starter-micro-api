@@ -3,7 +3,7 @@ var mineflayer = require('mineflayer');
 
 var bot = mineflayer.createBot({
     host: 'bksmp.hbmc.net',
-    port: 31098,
+    port: '31098',
     username: 'Belldong' // You can set the version if needed
 });
 
