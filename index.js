@@ -8,7 +8,7 @@ var bot = mineflayer.createBot({
 });
 
 bot.on('spawn', () => {
-    bot.chat('/log Belldong123'); // Replace '/your_command_here' with the command you want to run
+    bot.chat('/log Belldong123') // Replace '/your_command_here' with the command you want to run
 });
 
 function moveInCircle() {
