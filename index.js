@@ -4,13 +4,21 @@ const mineflayer = require('mineflayer');
 const bot = mineflayer.createBot({
     host: 'gn2.slicehosting.tech',
     port: 31098,
-    username: 'Belldong', // Replace with your Minecraft username
-    auth: 'offline' // Set to 'offline' for offline mode
+    username: 'Belldong',
+    auth: 'offline'
 });
 
 bot.on('spawn', () => {
     bot.chat('/login Belldong123');
     moveInCircle();
+});
+
+bot.on('login', () => {
+    console.log('Successfully logged in!');
+});
+
+bot.on('kicked', (reason) => {
+    console.log(`Kicked for: ${reason}`);
 });
 
 function moveInCircle() {
