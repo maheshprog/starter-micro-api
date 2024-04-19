@@ -8,12 +8,31 @@ const bot = mineflayer.createBot({
     auth: 'offline'
 });
 
+let isMovingForward = true;
+
+function moveThreeBlocks() {
+    if (isMovingForward) {
+        bot.setControlState('forward', true);
+        setTimeout(() => {
+            bot.setControlState('forward', false);
+            isMovingForward = false;
+        }, 3000); // Move forward for 3 seconds
+    } else {
+        bot.setControlState('back', true);
+        setTimeout(() => {
+            bot.setControlState('back', false);
+            isMovingForward = true;
+        }, 3000); // Move backward for 3 seconds
+    }
+}
+
 bot.on('spawn', () => {
     setTimeout(() => {
         bot.chat('/login Belldong123');
         bot.chat('helo im working');
-    }, 50); // 5-second delay before attempting to login
-    digAtCoordinate(-134, 71, -237);  // Example coordinates
+    }, 50); 
+
+    setInterval(moveThreeBlocks, 6000); // Execute moveThreeBlocks every 6 seconds
 });
 
 bot.on('login', () => {
@@ -24,24 +43,11 @@ bot.on('kicked', (reason) => {
     console.log(`Kicked for: ${reason}`);
 });
 
-function digAtCoordinate(x, y, z) {
-    const targetBlock = bot.blockAt(new mineflayer.vec3(x, y, z));
-    
-    bot.dig(targetBlock, (err) => {
-        if (err) {
-            console.log('Error:', err);
-            return;
-        }
-        
-        console.log(`Successfully mined block at ${x}, ${y}, ${z}`);
-    });
-}
-
 http.createServer((req, res) => {
     console.log(`Just got a request at ${req.url}!`);
     
     if (bot && bot.entity) {
-        res.write(`Bot is now digging at ${bot.entity.position}!`);
+        res.write(`Bot is now moving in a pattern!`);
     } else {
         res.write('Fix');
     }
