@@ -1,5 +1,6 @@
-const http = require('http');
 const mineflayer = require('mineflayer');
+
+let moving = true;
 
 const bot = mineflayer.createBot({
     host: 'gn2.slicehosting.tech',
@@ -8,31 +9,12 @@ const bot = mineflayer.createBot({
     auth: 'offline'
 });
 
-let isMovingForward = true;
-
-function moveThreeBlocks() {
-    if (isMovingForward) {
-        bot.setControlState('forward', true);
-        setTimeout(() => {
-            bot.setControlState('forward', false);
-            isMovingForward = false;
-        }, 3000); // Move forward for 3 seconds
-    } else {
-        bot.setControlState('back', true);
-        setTimeout(() => {
-            bot.setControlState('back', false);
-            isMovingForward = true;
-        }, 3000); // Move backward for 3 seconds
-    }
-}
-
 bot.on('spawn', () => {
     setTimeout(() => {
         bot.chat('/login Belldong123');
-        bot.chat('helo im working');
-    }, 50); 
-
-    setInterval(moveThreeBlocks, 6000); // Execute moveThreeBlocks every 6 seconds
+        bot.chat('Ready to move!');
+        startMoving();
+    }, 50);
 });
 
 bot.on('login', () => {
@@ -43,14 +25,46 @@ bot.on('kicked', (reason) => {
     console.log(`Kicked for: ${reason}`);
 });
 
-http.createServer((req, res) => {
-    console.log(`Just got a request at ${req.url}!`);
-    
-    if (bot && bot.entity) {
-        res.write(`Bot is now moving in a pattern!`);
-    } else {
-        res.write('Fix');
-    }
-    
-    res.end();
-}).listen(process.env.PORT || 3000);
+bot.on('playerJoined', (player) => {
+    console.log(`${player.username} joined the game.`);
+    stopMoving();
+    bot.quit();
+});
+
+bot.on('playerLeft', () => {
+    console.log('No players online. Reconnecting...');
+    bot.quit();
+    setTimeout(() => {
+        bot.connect();
+    }, 5000); // Reconnect after 5 seconds
+});
+
+function startMoving() {
+    moving = true;
+    moveBackAndForth();
+}
+
+function stopMoving() {
+    moving = false;
+}
+
+function moveBackAndForth() {
+    let direction = 1;
+    let distance = 0;
+
+    setInterval(() => {
+        if (moving) {
+            if (distance < 3 && direction === 1) {
+                bot.setControlState('forward', true);
+                distance += 1;
+            } else if (distance > 0 && direction === -1) {
+                bot.setControlState('back', true);
+                distance -= 1;
+            } else {
+                direction *= -1;
+            }
+        } else {
+            bot.clearControlStates();
+        }
+    }, 1000); // Adjust the interval as needed
+}
