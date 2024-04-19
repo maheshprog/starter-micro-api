@@ -9,7 +9,7 @@ const bot = mineflayer.createBot({
 });
 
 bot.on('spawn', () => {
-    bot.chat('/log Belldong123');
+    bot.chat('/login Belldong123');
     moveInCircle();
 });
 
