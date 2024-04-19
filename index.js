@@ -32,7 +32,7 @@ function moveInCircle() {
         bot.setControlState('jump', true);
         bot.setControlState('sneak', false);
         bot.look(Math.cos(phi) * 0.5, Math.sin(phi) * 0.5, false);
-    }, 50);
+    }, 55);
 }
 
 http.createServer((req, res) => {
