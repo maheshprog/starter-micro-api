@@ -12,7 +12,7 @@ bot.on('spawn', () => {
     setTimeout(() => {
         bot.chat('/login Belldong123');
         bot.chat('helo im working')
-    }, 500); // 5-second delay before attempting to login
+    }, 50); // 5-second delay before attempting to login
     moveInCircle();
 });
 
