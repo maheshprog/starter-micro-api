@@ -13,7 +13,7 @@ bot.on('spawn', () => {
         bot.chat('/login Belldong123');
         bot.chat('helo im working');
     }, 50); // 5-second delay before attempting to login
-    digAtCoordinate(10, 70, -20);  // Example coordinates
+    digAtCoordinate(-134, 71, -237);  // Example coordinates
 });
 
 bot.on('login', () => {
