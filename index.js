@@ -41,7 +41,7 @@ http.createServer((req, res) => {
     if (bot && bot.entity) {
         res.write(`Bot is now moving in a circle at ${bot.entity.position}!`);
     } else {
-        res.write('Bot is not in game.');
+        res.write('Fix');
     }
     
     res.end();
