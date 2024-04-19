@@ -3,7 +3,7 @@ const mineflayer = require('mineflayer');
 
 const bot = mineflayer.createBot({
     host: 'gn2.slicehosting.tech',
-    port: 31098,
+    port: '31098',
     username: 'Belldong',
     auth: 'offline'
 });
