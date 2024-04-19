@@ -9,7 +9,9 @@ const bot = mineflayer.createBot({
 });
 
 bot.on('spawn', () => {
-    bot.chat('/login Belldong123');
+    setTimeout(() => {
+        bot.chat('/login Belldong123');
+    }, 5000); // 5-second delay before attempting to login
     moveInCircle();
 });
 
