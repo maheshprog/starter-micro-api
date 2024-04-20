@@ -14,15 +14,16 @@ bot.on('spawn', () => {
         bot.chat('/login Belldong123');
         bot.chat('Ready to move!');
         startMoving();
-    }, 50);
+    }, 2000); // 2-second delay before login
 });
 
 bot.on('login', () => {
     console.log('Successfully logged in!');
 });
 
-bot.on('kicked', (reason) => {
+bot.on('kicked', (reason, loggedIn) => {
     console.log(`Kicked for: ${reason}`);
+    console.log(`Logged in: ${loggedIn}`);
 });
 
 bot.on('playerJoined', (player) => {
@@ -41,6 +42,10 @@ bot.on('playerLeft', () => {
     setTimeout(() => {
         bot.connect();
     }, 5000); // Reconnect after 5 seconds
+});
+
+bot.on('error', (err) => {
+    console.log('Error:', err);
 });
 
 function startMoving() {
