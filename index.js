@@ -60,7 +60,7 @@ function moveBackAndForth() {
     let direction = 1;
     let distance = 0;
 
-    setInterval(() => {
+    const moveInterval = setInterval(() => {
         if (moving) {
             if (distance < 3 && direction === 1) {
                 bot.setControlState('forward', true);
@@ -73,6 +73,7 @@ function moveBackAndForth() {
             }
         } else {
             bot.clearControlStates();
+            clearInterval(moveInterval); // Stop the movement interval
         }
     }, 1000); // Adjust the interval as needed
 }
