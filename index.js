@@ -1,79 +1,49 @@
 const mineflayer = require('mineflayer');
 
-let moving = true;
+let bot;
+let joinCount = 0;
 
-const bot = mineflayer.createBot({
-    host: 'gn2.slicehosting.tech',
-    port: '31098',
-    username: 'Belldong',
-    auth: 'offline'
-});
+function joinAndLeave() {
+    if (!bot) {
+        bot = mineflayer.createBot({
+            host: 'gn2.slicehosting.tech',
+            port: '31098',
+            username: 'PingBot',
+            auth: 'offline'
+        });
 
-bot.on('spawn', () => {
-    setTimeout(() => {
-        bot.chat('/login Belldong123');
-        bot.chat('Ready to move!');
-        startMoving();
-    }, 2000); // 2-second delay before login
-});
+        bot.on('spawn', () => {
+            console.log(`Join ${joinCount + 1}: Successfully spawned.`);
+            setTimeout(() => {
+                bot.quit();
+                bot = null;
+                joinCount++;
 
-bot.on('login', () => {
-    console.log('Successfully logged in!');
-});
+                if (joinCount < 3) {
+                    setTimeout(joinAndLeave, 2000); // 2 seconds before next join
+                } else {
+                    console.log('Cycle complete. Waiting for next cycle...');
+                    joinCount = 0;
+                    setTimeout(joinAndLeave, 180000); // 3 minutes (180000 milliseconds) before next cycle
+                }
+            }, 2000); // 2-second delay before quitting
+        });
 
-bot.on('kicked', (reason, loggedIn) => {
-    console.log(`Kicked for: ${reason}`);
-    console.log(`Logged in: ${loggedIn}`);
-});
+        bot.on('error', (err) => {
+            console.log(`Join ${joinCount + 1}: Error - ${err}`);
+            bot.quit();
+            bot = null;
+            joinCount++;
 
-bot.on('playerJoined', (player) => {
-    console.log(`${player.username} joined the game.`);
-    stopMoving();
-});
-
-bot.on('playerLeft', () => {
-    console.log('No players online. Reconnecting...');
-    stopMoving();
-});
-
-bot.on('end', () => {
-    console.log('Disconnected from server. Reconnecting...');
-    setTimeout(() => {
-        bot.connect(); // Reconnect after disconnecting
-    }, 5000); // Reconnect after 5 seconds
-});
-
-bot.on('error', (err) => {
-    console.log('Error:', err);
-});
-
-function startMoving() {
-    moving = true;
-    moveBackAndForth();
-}
-
-function stopMoving() {
-    moving = false;
-}
-
-function moveBackAndForth() {
-    let direction = 1;
-    let distance = 0;
-
-    const moveInterval = setInterval(() => {
-        if (moving) {
-            if (distance < 3 && direction === 1) {
-                bot.setControlState('forward', true);
-                distance += 1;
-            } else if (distance > 0 && direction === -1) {
-                bot.setControlState('back', true);
-                distance -= 1;
+            if (joinCount < 3) {
+                setTimeout(joinAndLeave, 2000); // 2 seconds before next join
             } else {
-                direction *= -1;
+                console.log('Cycle complete. Waiting for next cycle...');
+                joinCount = 0;
+                setTimeout(joinAndLeave, 540000); // 3 minutes (180000 milliseconds) before next cycle
             }
-        } else {
-            bot.clearControlStates();
-            clearInterval(moveInterval); // Stop the movement interval
-        }
-    }, 1000); // Adjust the interval as needed
+        });
+    }
 }
+
+joinAndLeave();
