@@ -31,7 +31,7 @@ bot.on('playerJoined', (player) => {
     stopMoving();
     bot.quit();
     setTimeout(() => {
-        bot.connect();
+        bot.connect(); // Automatically reconnects after disconnecting
     }, 5000); // Reconnect after 5 seconds
 });
 
@@ -40,7 +40,7 @@ bot.on('playerLeft', () => {
     stopMoving();
     bot.quit();
     setTimeout(() => {
-        bot.connect();
+        bot.connect(); // Automatically reconnects after disconnecting
     }, 5000); // Reconnect after 5 seconds
 });
 
