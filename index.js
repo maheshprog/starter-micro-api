@@ -29,10 +29,14 @@ bot.on('playerJoined', (player) => {
     console.log(`${player.username} joined the game.`);
     stopMoving();
     bot.quit();
+    setTimeout(() => {
+        bot.connect();
+    }, 5000); // Reconnect after 5 seconds
 });
 
 bot.on('playerLeft', () => {
     console.log('No players online. Reconnecting...');
+    stopMoving();
     bot.quit();
     setTimeout(() => {
         bot.connect();
