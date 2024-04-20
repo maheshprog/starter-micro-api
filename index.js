@@ -12,13 +12,13 @@ const bot = mineflayer.createBot({
 bot.on('spawn', () => {
     setTimeout(() => {
         bot.chat('/login Belldong123');
+        bot.chat('Ready to move!');
         startMoving();
-    }, 5000); // 5-second delay before login
+    }, 2000); // 2-second delay before login
 });
 
 bot.on('login', () => {
     console.log('Successfully logged in!');
-    bot.chat('Ready to move!');
 });
 
 bot.on('kicked', (reason, loggedIn) => {
@@ -29,16 +29,17 @@ bot.on('kicked', (reason, loggedIn) => {
 bot.on('playerJoined', (player) => {
     console.log(`${player.username} joined the game.`);
     stopMoving();
-    setTimeout(() => {
-        bot.connect(); // Automatically reconnects after disconnecting
-    }, 5000); // Reconnect after 5 seconds
 });
 
 bot.on('playerLeft', () => {
     console.log('No players online. Reconnecting...');
     stopMoving();
+});
+
+bot.on('end', () => {
+    console.log('Disconnected from server. Reconnecting...');
     setTimeout(() => {
-        bot.connect(); // Automatically reconnects after disconnecting
+        bot.connect(); // Reconnect after disconnecting
     }, 5000); // Reconnect after 5 seconds
 });
 
